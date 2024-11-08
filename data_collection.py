@@ -1,8 +1,5 @@
 
-
-## Data Collection (Etherscan)
-
-!pip install selenium
+# Data Collection (Etherscan)
 
 from bs4 import BeautifulSoup as bs
 import requests as req
@@ -56,4 +53,27 @@ def readRow(rowIndex):
 
 
 
+# Collect data for each block
+table = []
+for blockUrl in tqdm(blockURLs, desc="Collecting Data Blocks ("):
+    driver.get(blockUrl)
+    tranCount = int(driver.find_element(by=By.XPATH, value="//*[@id=\"ContentPlaceHolder1_divDataInfo\"]/div/div[1]/span").text.split(" ")[3])
+    pageCount = math.ceil(tranCount / 50)
+    for pageIndex in range(1, pageCount + 1):
+        url = blockUrl + "&p=" + str(pageIndex)
+        driver.get(url)
+        time.sleep(1)
+        rowBound = (tranCount - (pageCount - 1) * 50 + 1) if (pageIndex == pageCount) else 51
+        for rowIndex in range(1, rowBound):
+            table.append(readRow(rowIndex))
+    time.sleep(1)
+
+
+
+# Convert to DataFrame and save to CSV
+dataFrame = pd.DataFrame(table)
+dataFrame.to_csv("DataFrame.csv", index=False)
+
+# # Close the driver
+driver.quit()
 
