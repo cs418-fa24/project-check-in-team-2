@@ -1,17 +1,9 @@
-from bs4 import BeautifulSoup as bs
-import requests as req
 import pandas as pd
-import math
-import time
-from tqdm import tqdm
 import re
 import matplotlib.pyplot as plt
 import seaborn as sns
-import scipy.stats as stats
-from scipy.stats import norm
 import numpy as np
 from math import sqrt
-import random
 
 
 cleanedDataFrame = pd.read_csv("DataFrame.csv")
